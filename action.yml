@@ -95,7 +95,7 @@ runs:
       run: |
         TEMP="./${{ steps.tmp.outputs.dir_name }}"
         
-        $TEMP/s3_task_def.json > ./${{ steps.tmp.outputs.dir_name }}/${{ inputs.application }}.json
+        cat $TEMP/s3_task_def.json > ./${{ steps.tmp.outputs.dir_name }}/${{ inputs.application }}.json
 
     - name: Debug
       if: ${{ inputs.operation == 'deploy' && inputs.mirror_to_s3_bucket != '' && inputs.use_partial_taskdefinition != '' && inputs.debug == 'true'}}
