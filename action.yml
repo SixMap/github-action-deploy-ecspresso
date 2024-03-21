@@ -95,18 +95,7 @@ runs:
       run: |
         TEMP="./${{ steps.tmp.outputs.dir_name }}"
         
-        jq --slurp '
-          {
-            containerDefinitions: (
-                reduce (.[0].containerDefinitions[] | {(.name): .}) as $item ({}; . + $item)
-                *
-                reduce (.[1].containerDefinitions[] | {(.name): .}) as $item ({}; . + $item)
-            )
-            | to_entries
-            | map(.value)
-          }
-          + (.[0] + .[1] | del(.containerDefinitions))
-        ' $TEMP/s3_task_def.json ${{ inputs.taskdef-path }} > ./${{ steps.tmp.outputs.dir_name }}/${{ inputs.application }}.json
+        $TEMP/s3_task_def.json > ./${{ steps.tmp.outputs.dir_name }}/${{ inputs.application }}.json
 
     - name: Debug
       if: ${{ inputs.operation == 'deploy' && inputs.mirror_to_s3_bucket != '' && inputs.use_partial_taskdefinition != '' && inputs.debug == 'true'}}
